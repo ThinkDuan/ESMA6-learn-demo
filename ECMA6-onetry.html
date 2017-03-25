@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ESMA6尝试One</title>
+</head>
+<body>
+	<script>
+		// var a=[];
+		// for(var i=1;i<10;i++){
+		// 	console.log(i);
+		// 	a[i]=i;
+		// }
+		// let a="hello world";
+		// console.log(a);
+		// console.log(a[6]);
+		// a[6];
+
+		{
+			var a = 1;
+			let b = 2;
+			const c = 3;
+		}
+		console.log(a);
+		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+		//let 和const 声明的变量，b和c都有块级作用域限制，在范围之外不可再用，但是var定义的变量是全局变量，可是之后输出
+		//console.log(b);
+		//console.log(c);
+
+		var a = [];
+		for (var i = 0; i < 10; i++) {
+		  a[i] = function () {
+		    console.log(i);
+		  };
+		}
+		a[6]();//10
+
+		var a = [];
+		for (let i = 0; i < 10; i++) {
+		  a[i] = function () {
+		    console.log(i);
+		  };
+		}
+		a[6]();//6
+
+		function foo(){console.log('out');}
+		(function foo () {
+			if (false) {
+				function foo(){console.log('in');}
+			}});
+		foo();
+
+		// {
+		// 	let x= do {let t=1;};
+		// 	console.log(x)
+		// }
+
+
+		//var声明对象
+		var a=1;
+		console.log(window.a);
+		//
+		 let b=2;
+		 console.log(window.b);
+		 console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+		 // 变量的解构,依次解析，顺序很重要，可以设置默认值，数组成员必须严格等于undefined，否则会报错，
+		 // 同时若let [a=foo()]=[1]; 则a=1;懒解构用到foo（）函数的时候才解析
+		 {
+		 	function foo () {
+		 		console.log("foo"); 
+		 	}
+		 	let [a,b,c=1,d=foo()] = [1,2,3,null];
+		 		 console.log(a);
+		 		 console.log(b);
+		 		 console.log(c);
+		 		 console.log(d);
+		 	let [e=1] = [null];//默认值不会生效，e值为null
+		 	console.log(e);
+		 	console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+		 }
+
+		 //对象的解构。顺序不重要，按照对象名称来查找
+
+		 {
+		 	({x} = {x:1});//将对象的解构赋值语句放在（）之中就可以正常运行
+		 	//解构赋值允许左边的模式之中不放任何变量名,但是这样做显然是没有任何意义的，但是是合法的
+		 	({}={y:1});
+		 	({}="abc");
+		 	({}=[]);
+		 	console.log(x);
+		 	// 对象的结构赋值可以将现有对象的方法解构到对应的变量上
+		 	{
+		 		const PI = 3.14159;
+		 		let {sin,cos,tan,random} = Math;
+		 		let sin30 = sin(30);
+		 		console.log(sin30);
+		 	}
+
+		 	//数组也是特殊的对象所以可以使用解构，取到数组内的值
+		 	{
+		 		let arrs = [1,2,3,4,5];
+		 		let {0:first,[arrs.length-1]:last} = arrs;
+		 		console.log(first);
+		 		console.log(last);
+		 	}
+
+
+
+		 	let {example,example1} = {example:"hello",example1:"world"};
+		 	console.log(example);
+		 	console.log(example1);
+		 	// let {foo,foo1} = {foo={name:"zhangsan";age:23},foo1={name:"lisi";age:98}};
+		 	// console.log(foo.name);
+		 	// console.log(foo1.name);
+
+
+		 	//字符串的解构
+		 	 {
+		 	 	let str = "Hello world!";
+		 	 	console.log(str);
+		 	 	let [a,b,c,d,e] = str;
+		 	 	console.log(a);
+		 	 	console.log(b);
+		 	 	console.log(c);
+		 	 	console.log(d);
+		 	 	console.log(e);
+		 	 	let {length:len} = str;
+		 	 	console.log(len);
+
+		 	 }
+
+
+		 	 //解构赋值时，对于数值和boolean都会先转化为对象，然后使用数之和boolean都有的属性
+		 	 {
+		 	 	let {toString:num} = 123;
+		 	 	let {toString:bools} = true;
+		 	 	let str = 123;
+		 	 	console.log(str.num);
+		 	 	console.log(bools);
+		 	 	console.log(str.toString());
+		 	 }
+
+
+		 	 //函数参数的解构
+		 	 {
+		 	 	function foo([x,y]){
+		 	 		return x*y;
+		 	 	}
+		 	 	console.log(foo([1,2]));
+		 	 }
+
+
+		 	 }
+
+		 	 console.log("解构赋值的应用");
+		 	 //解构函数的应用
+		 	 //1.交换变量的值
+		 	 {
+		 	 	let x=1,y=2;
+		 	 	console.log(x,y+"没交换前");
+		 	 	[x,y]=[y,x];
+		 	 	console.log(x,y+"交换后");
+
+		 	 }
+
+		 	 //2从函数返回多个值
+		 	 {
+		 	 	function foo(){
+		 	 		return [1,2,3];
+		 	 	}
+		 	 	console.log(foo());
+		 	 	let [a,b,c] = foo();
+		 	 	console.log(a+b+c);
+
+		 	 	function example() {
+				  return {
+				    foo1: 1,
+				    bar: 2
+				  };
+				}
+				let {foo1,bar} = example();
+				console.log(foo1);
+				console.log(bar);
+		 	 }
+
+		 	 //3可以将函数参数列表和值对应
+		 	 {
+		 	 	function foo([a,b,c]){
+		 	 		return a+b+c;
+		 	 	}
+		 		foo([1,2,3]);//有次序的值
+		 	 	function foo1({a,b,c}){
+		 	 		return null;
+		 	 	}
+		 		foo1({a:2,b:2,c:3});//没有次序的值
+		 	 }
+
+		 	 //4提取JSON数据尤其有效
+		 	 {
+		 	 	let jsonData = {
+		 	 		name:"zhangsan",
+		 	 		age:23,
+		 	 		id:000002,
+		 	 		da:[1,2],
+		 	 	}
+		 	 	let {name,age,id,da:number} = jsonData;
+		 	 	console.log(name,age,id,number);
+
+		 	 }
+
+		 	 console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~接下来箭头函数~~~~");
+		 // //箭头函数，基本形式（<argument> => <return statement）当只有一个参数的时候
+		 // // 可以省略不写 (x)=>x*x和x=>x*x是等价的
+		 // {
+		 // 	// 数组
+		 // 	const arrs = [1,2,3,4];
+		 // 	// 定义一个箭头函数，采用的C#的lamda形式
+		 // 	let byTwo = arrs.map(i=>i*2);
+		 // 	byTwo;
+		 // 	console.log(byTwo);
+		 // 	//使用箭头函数，可以使用block{}
+		 // 	let byFour = arrs.map((i)=>{return i*4;});
+		 // 	console.log(byTwo);
+		 // 	// 绑定this
+			// //箭头函数体内的 this 对象，就是定义时所在的对象，而不是使用时所在的对象, 原因是箭头函数没有自己的 this.
+			// //不可以当作构造函数，不可以使用 new 命令。
+			// //不可以使用 arguments 对象，该对象在函数体内不存在。可以用 Rest 参数代替。
+			// //不可以使用 yield 命令，因此箭头函数不能用作 Generator 函数。
+			// // arguments、super、new.target 在在箭头函数之中是不存在的，他们指向外层函数的对应变量。
+			// //箭头函数没有自己的this所以不能用call（），apply（），bind（）等函数去改变this的指向
+		 // 	function Person(){
+		 // 		this.Company = "yonyou";
+		 // 		this.Name = ["Tom","jerry","Me"];
+		 // 		this.print = ()=>{
+		 // 			return this.Name.map((n)=>{return n +"is comes from" +this.Company;})
+		 // 		};
+		 // 	}
+		 // 	console.log(new Person().print());
+		 // }
+		 // console.log("~~~~~~~华丽丽的分割线~~~~~~~~接下来是模板字面量~~~~");
+		 // //字符串模板
+		 // {
+		 // 	let  name = "tom";
+		 // 	console.log( "hello "+[name]);
+		 // 	console.log(`Hello ${name}`);
+		 // 	//字符串可以放表达式
+		 // 	let a=1,b=2;
+		 // 	console.log([a+b]);
+		 // 	console.log(`yes!${(a+b)*2}${name}`);
+		 // 	//函数
+		 // 	function foo () {
+		 // 		return (a+b)*9; 
+		 // 	}
+		 // 	console.log(`${foo()}`);
+		 // }
+		 // console.log("~~~~~~~华丽丽的分割线~~~~~~~~~~~");
+		 // //${}可以使用任何方法和表达式调用
+		 // {
+		 // 	let  Person = {
+		 // 		name:"zhangsan",
+		 // 		age:29,
+		 // 		complay:"wangzhe"
+		 // 		// ageMountNumCount:function(this.age){
+		 // 		// 	let age=this.age;
+		 // 		// 	return age*12;
+		 // 		// },
+		 // 	};
+		 // 	// let  Man extends Person = {
+
+		 // 	// };
+		 // 	console.log(`${Person.name},${Person.age}`);
+		 // }
+
+	</script>
+</body>
+</html>
